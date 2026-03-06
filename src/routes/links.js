@@ -1,19 +1,19 @@
 const { Router } = require('express');
-const { bookmarkRules, handleValidationErrors } = require('../middleware/validate');
+const { linkRules, handleValidationErrors } = require('../middleware/validate');
 
 const router = Router();
 
-let bookmarks = [];
+let links = [];
 let nextId = 1;
 
 // Exposed for testing — reset state between runs
 function resetStore() {
-  bookmarks = [];
+  links = [];
   nextId = 1;
 }
 
 router.get('/', (req, res) => {
-  res.json(bookmarks);
+  res.json(links);
 });
 
 router.get('/search', (req, res) => {
@@ -21,7 +21,7 @@ router.get('/search', (req, res) => {
   if (!tag) {
     return res.status(400).json({ error: 'tag query parameter is required' });
   }
-  const results = bookmarks.filter((b) => b.tags.includes(tag));
+  const results = links.filter((b) => b.tags.includes(tag));
   res.json(results);
 });
 
@@ -31,18 +31,18 @@ router.get('/:id', (req, res) => {
     return res.status(400).json({ error: 'id must be an integer' });
   }
 
-  const bookmark = bookmarks.find((b) => b.id === id);
-  if (!bookmark) {
-    return res.status(404).json({ error: 'Bookmark not found' });
+  const link = links.find((b) => b.id === id);
+  if (!link) {
+    return res.status(404).json({ error: 'Link not found' });
   }
 
-  res.json(bookmark);
+  res.json(link);
 });
 
-router.post('/', bookmarkRules, handleValidationErrors, (req, res) => {
+router.post('/', linkRules, handleValidationErrors, (req, res) => {
   const { title, url, tags = [] } = req.body;
 
-  const bookmark = {
+  const link = {
     id: nextId++,
     title,
     url,
@@ -50,8 +50,8 @@ router.post('/', bookmarkRules, handleValidationErrors, (req, res) => {
     createdAt: new Date().toISOString(),
   };
 
-  bookmarks.push(bookmark);
-  res.status(201).json(bookmark);
+  links.push(link);
+  res.status(201).json(link);
 });
 
 module.exports = { router, resetStore };
