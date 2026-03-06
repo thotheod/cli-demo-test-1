@@ -1,10 +1,10 @@
 const express = require('express');
-const { router: bookmarksRouter } = require('./routes/bookmarks');
+const { router: linksRouter } = require('./routes/links');
 
 const app = express();
 
 app.use(express.json());
-app.use('/bookmarks', bookmarksRouter);
+app.use('/links', linksRouter);
 
 // 404 handler
 app.use((req, res) => {

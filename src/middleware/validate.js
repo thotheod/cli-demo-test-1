@@ -1,6 +1,6 @@
 const { body, validationResult } = require('express-validator');
 
-const bookmarkRules = [
+const linkRules = [
   body('title')
     .trim()
     .notEmpty()
@@ -29,4 +29,4 @@ function handleValidationErrors(req, res, next) {
   next();
 }
 
-module.exports = { bookmarkRules, handleValidationErrors };
+module.exports = { linkRules, handleValidationErrors };
